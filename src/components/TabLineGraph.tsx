@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { COLORS } from '../utils/constants';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle, runOnJS } from 'react-native-reanimated';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
-import Tabs from './Tabs';
-import AnimatedLineGraph from './AnimatedLineGraph';
+import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { data } from '../data/chartData';
+import { COLORS } from '../utils/constants';
+import AnimatedLineGraph from './AnimatedLineGraph';
+import Tabs from './Tabs';
 
 const TabLineGraph: React.FC = () => {
   const [activeTab, setActiveTab] = useState('tab1');
