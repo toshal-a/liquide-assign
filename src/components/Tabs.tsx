@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../utils/constants';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface TabsProps {
   activeTab: string;
@@ -8,37 +9,64 @@ interface TabsProps {
   data: { [key: string]: { points: number[], secondPathColor: string } };
 }
 
-const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange, data }) => (
-  <View style={styles.tabs}>
-    {Object.keys(data).map((tab) => (
-      <TouchableOpacity
-        key={tab}
-        style={[styles.tab, activeTab === tab && styles.activeTab]}
-        onPress={() => onTabChange(tab)}
-      >
-        <Text style={styles.tabText}>{tab.toUpperCase()}</Text>
-      </TouchableOpacity>
-    ))}
-  </View>
-);
+const tabWidth = 100; 
+const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange, data }) => {
+  const translateX = useSharedValue(0);
+
+  useEffect(() => {
+    const tabIndex = Object.keys(data).indexOf(activeTab);
+    translateX.value = withTiming(tabIndex * tabWidth, { duration: 300 });
+  }, [activeTab]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
+
+  return (
+    <View style={styles.tabsContainer}>
+      <View style={styles.tabs}>
+        <Animated.View style={[styles.activeTab, animatedStyle]} />
+        {Object.keys(data).map((tab) => (
+          <TouchableOpacity
+            key={tab}
+            style={styles.tab}
+            onPress={() => onTabChange(tab)}
+          >
+            <Text style={styles.tabText}>{tab.toUpperCase()}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  tabs: {
+  tabsContainer: {
+    position: 'relative',
     marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
     marginBottom: 20,
   },
+  tabs: {
+    flexDirection: 'row',
+    marginHorizontal: 10,
+  },
   tab: {
-    paddingHorizontal: 20,
     paddingVertical: 10,
+    width: tabWidth, // Adjust to the width of each tab
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   activeTab: {
-    borderRadius: 10,
+    position: 'absolute',
+    width: tabWidth, // Adjust to the width of each tab
+    height: '100%',
     backgroundColor: COLORS.primary,
+    borderRadius: 10,
   },
   tabText: {
+    width: 100,
     fontSize: 14,
+    textAlign: 'center',
   },
 });
 
