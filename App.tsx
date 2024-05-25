@@ -7,6 +7,7 @@
 
 import React from 'react';
 import {
+  SafeAreaView,
   ScrollView
 } from 'react-native';
 
@@ -14,9 +15,11 @@ import TabLineGraph from './src/components/TabLineGraph';
 
 function App(): React.JSX.Element {
   return (
-    <ScrollView>
-      <TabLineGraph />
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView>
+        <TabLineGraph />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
