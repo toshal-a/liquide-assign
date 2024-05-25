@@ -5,5 +5,6 @@ export const COLORS = {
     onPrimary: "#ffffff",
     onSecondary: "#838383",
     divider: "#3b3b3a",
-    green: "#6bce86"
+    green: "#6bce86",
+    red: "#EB5852"
 }

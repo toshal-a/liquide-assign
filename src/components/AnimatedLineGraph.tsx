@@ -11,11 +11,12 @@ const graphWidth = width - 60;
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-interface ChartProps {
+interface AnimatedLineGraphProps {
   points: number[];
+  secondPathColor: string;
 }
 
-const AnimatedLineGraph: React.FC<ChartProps> = ({ points }) => {
+const AnimatedLineGraph: React.FC<AnimatedLineGraphProps> = ({ points, secondPathColor }) => {
     const [pathData1, setPathData1] = useState('');
     const [pathData2, setPathData2] = useState('');
 
@@ -103,7 +104,7 @@ const AnimatedLineGraph: React.FC<ChartProps> = ({ points }) => {
             <AnimatedPath
             ref={pathRef2}
             d={pathData2}
-            stroke={COLORS.green}
+            stroke={secondPathColor}
             strokeWidth="2"
             fill="none"
             strokeDasharray={pathLength2}

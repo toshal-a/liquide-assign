@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { data } from '../data/chartData';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { COLORS } from '../utils/constants';
-import AnimatedLineGraph from './AnimatedLineGraph';
+import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import Tabs from './Tabs';
+import AnimatedLineGraph from './AnimatedLineGraph';
+import { data } from '../data/chartData';
 
 const TabLineGraph: React.FC = () => {
   const [activeTab, setActiveTab] = useState('tab1');
-  const points = data[activeTab];
+  const { points, secondPathColor } = data[activeTab];
 
   const transition = useSharedValue(1);
 
@@ -30,7 +30,7 @@ const TabLineGraph: React.FC = () => {
       <Tabs activeTab={activeTab} onTabChange={handleTabChange} data={data} />
       <View style={styles.chartContainer}>
         <Animated.View style={animatedStyle}>
-          <AnimatedLineGraph points={points} />
+          <AnimatedLineGraph points={points} secondPathColor={secondPathColor} />
         </Animated.View>
       </View>
     </View>

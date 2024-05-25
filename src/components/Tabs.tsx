@@ -5,7 +5,7 @@ import { COLORS } from '../utils/constants';
 interface TabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
-  data: { [key: string]: number[] };
+  data: { [key: string]: { points: number[], secondPathColor: string } };
 }
 
 const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange, data }) => (
