@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -6,10 +6,16 @@ import { data } from '../data/chartData';
 import { COLORS } from '../utils/constants';
 import AnimatedLineGraph from './AnimatedLineGraph';
 import Tabs from './Tabs';
+import { calculatePaths } from '../utils/pathUtils';
 
 const TabLineGraph: React.FC = () => {
   const [activeTab, setActiveTab] = useState('tab1');
-  const { points, secondPathColor } = data[activeTab];
+
+  const { secondPathColor, pathData1, pathData2 } = useMemo(() => {
+    const { points, secondPathColor } = data[activeTab];
+    const { pathData1, pathData2 } = calculatePaths(points);
+    return { points, secondPathColor, pathData1, pathData2 };
+  }, [activeTab]);
 
   const transition = useSharedValue(1);
   const translateX = useSharedValue(0);
@@ -59,7 +65,7 @@ const TabLineGraph: React.FC = () => {
       <Tabs activeTab={activeTab} onTabChange={handleTabChange} data={data} />
       <GestureDetector gesture={panGesture}>
         <Animated.View style={[styles.chartContainer, animatedStyle]}>
-          <AnimatedLineGraph points={points} secondPathColor={secondPathColor} />
+          <AnimatedLineGraph initialPathData1={pathData1} initialPathData2={pathData2} secondPathColor={secondPathColor} />
         </Animated.View>
       </GestureDetector>
     </GestureHandlerRootView>
