@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useAnimatedProps, useSharedValue, withTiming, runOnUI } from 'react-native-reanimated';
 import { Line, Path, Svg } from 'react-native-svg';
