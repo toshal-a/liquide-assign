@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -7,14 +7,23 @@ import { COLORS } from '../utils/constants';
 import AnimatedLineGraph from './AnimatedLineGraph';
 import Tabs from './Tabs';
 import { calculatePaths } from '../utils/pathUtils';
+import useStateWithPrevious from '../hooks/useStateWithPrevious';
 
 const TabLineGraph: React.FC = () => {
   const [activeTab, setActiveTab] = useState('tab1');
+  const prevPathData1 = useRef<string | null>(null);
+  const prevPathData2 = useRef<string | null>(null);
 
-  const { secondPathColor, pathData1, pathData2 } = useMemo(() => {
+  const { secondPathColor, pathData1, pathData2, path1Changed, path2Changed } = useMemo(() => {
     const { points, secondPathColor } = data[activeTab];
     const { pathData1, pathData2 } = calculatePaths(points);
-    return { points, secondPathColor, pathData1, pathData2 };
+    const path1Changed = pathData1 !== prevPathData1.current;
+    const path2Changed = pathData2 !== prevPathData2.current;
+
+    prevPathData1.current = pathData1;
+    prevPathData2.current = pathData2;
+
+    return { secondPathColor, pathData1, pathData2, path1Changed, path2Changed };
   }, [activeTab]);
 
   const transition = useSharedValue(1);
@@ -65,7 +74,13 @@ const TabLineGraph: React.FC = () => {
       <Tabs activeTab={activeTab} onTabChange={handleTabChange} data={data} />
       <GestureDetector gesture={panGesture}>
         <Animated.View style={[styles.chartContainer, animatedStyle]}>
-          <AnimatedLineGraph initialPathData1={pathData1} initialPathData2={pathData2} secondPathColor={secondPathColor} />
+          <AnimatedLineGraph
+            pathData1={pathData1}
+            pathData2={pathData2}
+            path1Changed={path1Changed}
+            path2Changed={path2Changed}
+            secondPathColor={secondPathColor}
+          />
         </Animated.View>
       </GestureDetector>
     </GestureHandlerRootView>
