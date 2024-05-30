@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions } from 'react-native';
-import Animated, { useAnimatedProps, useSharedValue, withTiming, runOnUI } from 'react-native-reanimated';
+import Animated, { runOnUI, useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Line, Path, Svg } from 'react-native-svg';
-import { COLORS } from '../utils/constants';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { COLORS } from '../utils/constants';
 const { width } = Dimensions.get('window');
 const chartHeight = 200;
 const graphWidth = width - 60;
@@ -42,6 +42,7 @@ const AnimatedLineGraph: React.FC<AnimatedLineGraphProps> = ({
 				progress2.value = withTiming(1, { duration: 500 });
 			});
 		} else if (path2Changed) {
+			progress1.value = 1;
 			progress2.value = 0;
 			progress2.value = withTiming(1, { duration: 500 });
 		}

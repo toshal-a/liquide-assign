@@ -13,8 +13,8 @@ import {
   View
 } from 'react-native';
 
-import TabLineGraph from './src/components/TabLineGraph';
 import Button from './src/components/Button';
+import TabNavigator from './src/components/TabNavigator';
 
 function App(): React.JSX.Element {
     const [showGraph, setShowGraph] = useState<boolean>(false);
@@ -37,7 +37,7 @@ function App(): React.JSX.Element {
             <Button onPress={onHidePress} title='HideGraph'/>
           </View>
           {
-            showGraph ? <TabLineGraph /> : null
+            showGraph ? <TabNavigator /> : null
           }
         </ScrollView>
       </SafeAreaView>

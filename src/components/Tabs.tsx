@@ -42,7 +42,6 @@ const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange, data }) => {
 
 const styles = StyleSheet.create({
   tabsContainer: {
-    position: 'relative',
     marginTop: 20,
     marginBottom: 20,
   },
