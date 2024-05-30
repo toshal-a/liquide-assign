@@ -24,8 +24,6 @@ export const TabProvider: React.FC = ({ children }: any) => {
       setActiveTab(tab);
   };
 
-  console.log('initialTab', initialTab);
-
   const [activeTab, setActiveTab] = useState(
       initialTab
   );
