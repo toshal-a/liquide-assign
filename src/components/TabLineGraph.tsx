@@ -1,13 +1,12 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { data } from '../data/chartData';
 import { COLORS } from '../utils/constants';
+import { calculatePaths } from '../utils/pathUtils';
 import AnimatedLineGraph from './AnimatedLineGraph';
 import Tabs from './Tabs';
-import { calculatePaths } from '../utils/pathUtils';
-import useStateWithPrevious from '../hooks/useStateWithPrevious';
 
 const TabLineGraph: React.FC = () => {
   const [activeTab, setActiveTab] = useState('tab1');
