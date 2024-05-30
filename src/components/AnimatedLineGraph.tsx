@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useAnimatedProps, useSharedValue, withTiming, runOnUI } from 'react-native-reanimated';
 import { Line, Path, Svg } from 'react-native-svg';
 import { COLORS } from '../utils/constants';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 const { width } = Dimensions.get('window');
 const chartHeight = 200;
 const graphWidth = width - 60;
@@ -28,24 +29,9 @@ const AnimatedLineGraph: React.FC<AnimatedLineGraphProps> = ({
 	const pathRef2 = useRef<SVGPathElement>(null);
 	const progress1 = useSharedValue(0);
 	const progress2 = useSharedValue(0);
-	const [pathLength1, setPathLength1] = useState<number>(-1);
-	const [pathLength2, setPathLength2] = useState<number>(-1);
-	useEffect(() => {
-		if (path1Changed || path2Changed) {
-            runOnUI(() => {
-                animatePaths(path1Changed, path2Changed);
-            })();
-		}
-	}, [path1Changed, path2Changed, pathData1, pathData2]);
-
-	useEffect(() => {
-		return () => {
-            runOnUI(() => {
-                progress1.value = 0;
-                progress2.value = 0;
-            })();
-		}
-	}, []);
+	const [pathLength1, setPathLength1] = useState<number>(0);
+	const [pathLength2, setPathLength2] = useState<number>(0);
+	const [animationStarted, setAnimationStarted] = useState<boolean>(false);
 
 	const animatePaths = (path1Changed: boolean, path2Changed: boolean) => {
 		'worklet';
@@ -60,6 +46,25 @@ const AnimatedLineGraph: React.FC<AnimatedLineGraphProps> = ({
 			progress2.value = withTiming(1, { duration: 500 });
 		}
 	};
+
+	useEffect(() => {
+		if (path1Changed || path2Changed) {
+            runOnUI(() => {
+                animatePaths(path1Changed, path2Changed);
+            })();
+			setAnimationStarted(true);
+		}
+	}, [path1Changed, path2Changed, pathData1, pathData2]);
+
+	useEffect(() => {
+		return () => {
+            runOnUI(() => {
+                progress1.value = 0;
+                progress2.value = 0;
+            })();
+			setAnimationStarted(false);
+		}
+	}, []);
 
 	useEffect(() => {
 		if (pathRef1.current) {
@@ -88,7 +93,7 @@ const AnimatedLineGraph: React.FC<AnimatedLineGraphProps> = ({
 			<AnimatedPath
 				ref={pathRef1}
 				d={pathData1}
-				stroke={COLORS.onPrimary}
+				stroke={animationStarted ? COLORS.onPrimary : Colors.background}
 				strokeWidth="2"
 				fill="none"
 				strokeDasharray={pathLength1}
@@ -97,7 +102,7 @@ const AnimatedLineGraph: React.FC<AnimatedLineGraphProps> = ({
 			<AnimatedPath
 				ref={pathRef2}
 				d={pathData2}
-				stroke={secondPathColor}
+				stroke={animationStarted ? secondPathColor : Colors.background}
 				strokeWidth="2"
 				fill="none"
 				strokeDasharray={pathLength2}
