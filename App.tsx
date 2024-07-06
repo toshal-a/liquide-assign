@@ -13,8 +13,8 @@ import {
   View
 } from 'react-native';
 
-import Button from './src/components/Button';
-import TabNavigator from './src/components/TabNavigator';
+import ApiCallTsx from './src/components/ApiCall';
+import { ApiCallProvider } from './src/components/ApiContext';
 
 function App(): React.JSX.Element {
     const [showGraph, setShowGraph] = useState<boolean>(false);
@@ -29,7 +29,7 @@ function App(): React.JSX.Element {
 
     return (
       <SafeAreaView>
-        <ScrollView>
+        {/* <ScrollView>
           <View style={styles.buttonContainer}>
             <Button onPress={onButtonPress} title='Show Graph'/>
           </View>
@@ -39,7 +39,12 @@ function App(): React.JSX.Element {
           {
             showGraph ? <TabNavigator /> : null
           }
-        </ScrollView>
+        </ScrollView> */}
+        {/* <ScrollView> */}
+        <ApiCallProvider>
+          <ApiCallTsx />
+        </ApiCallProvider>
+        {/* </ScrollView> */}
       </SafeAreaView>
     );
 }
