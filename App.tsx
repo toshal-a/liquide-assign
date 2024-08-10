@@ -8,13 +8,10 @@
 import React, { useState } from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View
+  StyleSheet
 } from 'react-native';
 
-import ApiCallTsx from './src/components/ApiCall';
-import { ApiCallProvider } from './src/components/ApiContext';
+import ProductList from './src/products/ProductList';
 
 function App(): React.JSX.Element {
     const [showGraph, setShowGraph] = useState<boolean>(false);
@@ -41,9 +38,10 @@ function App(): React.JSX.Element {
           }
         </ScrollView> */}
         {/* <ScrollView> */}
-        <ApiCallProvider>
+        {/* <ApiCallProvider>
           <ApiCallTsx />
-        </ApiCallProvider>
+        </ApiCallProvider> */}
+        <ProductList />
         {/* </ScrollView> */}
       </SafeAreaView>
     );
