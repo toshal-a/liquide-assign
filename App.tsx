@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 
 import ProductList from './src/products/ProductList';
+import GorgonBottomSheetModal from './src/components/GorgonBottomSheetModal';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 function App(): React.JSX.Element {
     const [showGraph, setShowGraph] = useState<boolean>(false);
@@ -25,7 +27,7 @@ function App(): React.JSX.Element {
     }
 
     return (
-      <SafeAreaView>
+      <>
         {/* <ScrollView>
           <View style={styles.buttonContainer}>
             <Button onPress={onButtonPress} title='Show Graph'/>
@@ -41,9 +43,15 @@ function App(): React.JSX.Element {
         {/* <ApiCallProvider>
           <ApiCallTsx />
         </ApiCallProvider> */}
-        <ProductList />
+        { 
+          /* <ProductList />*/
+        }
+        <GestureHandlerRootView>
+        <GorgonBottomSheetModal />
+        </GestureHandlerRootView>
         {/* </ScrollView> */}
-      </SafeAreaView>
+      </>
+      
     );
 }
 
