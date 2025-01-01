@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: PR Build Code
+    name: PR Yarn Install
     runs-on: [org-level-runner]
 
     steps:
@@ -23,10 +23,8 @@ jobs:
         with:
           node-version: '18.x'
       
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+      - name: Setup Yarn
+        run: npm install -g yarn
       
       - name: Gcloud Auth
         uses: google-github-actions/auth@v2
@@ -37,7 +35,4 @@ jobs:
         run: npx google-artifactregistry-auth
 
       - name: Install Dependencies
-        run: pnpm install
-  
-      - name: Build
-        run: pnpm build
+        run: yarn install
