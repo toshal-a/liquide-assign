@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: PR Yarn Install
-    runs-on: [org-level-runner]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
