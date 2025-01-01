@@ -1,0 +1,43 @@
+name: PR Build Check
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release
+
+jobs:
+  build:
+    name: PR Build Code
+    runs-on: [org-level-runner]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Update apt
+        run: sudo apt update
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      - name: Gcloud Auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GAR_GOOGLE_CREDENTIAL_JSON }}
+          
+      - name: 'Google Artifacts Auth'
+        run: npx google-artifactregistry-auth
+
+      - name: Install Dependencies
+        run: pnpm install
+  
+      - name: Build
+        run: pnpm build
